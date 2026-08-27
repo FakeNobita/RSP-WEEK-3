@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsible &amp; Safe AI Systems WEEK-2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid #e5e5e5;
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        .question-image {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 16px auto;
+            border-radius: 8px;
+        }
+
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 12px;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            min-height: 50px;
+            line-height: 1.4;
+        }
+
+        .option:hover {
+            background-color: #f8f8f8;
+        }
+
+        .option-label {
+            display: block;
+            flex: 1;
+            margin: 0;
+            padding: 0;
+        }
+
+        .option.selected {
+            border-color: #3b82f6;
+        }
+
+        .option.correct {
+            background-color: #ecfdf5;
+        }
+
+        .option.wrong {
+            background-color: #fef2f2;
+        }
+
+        .option input[type="radio"],
+        .option input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0 12px 0 0;
+            padding: 0;
+            flex: 0 0 16px;
+            vertical-align: middle;
+        }
+
+        .feedback {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e5e5;
+            display: none;
+        }
+
+        .feedback.visible {
+            display: block;
+        }
+
+        .result-icon {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .result-icon.correct {
+            color: #059669;
+        }
+
+        .result-icon.wrong {
+            color: #dc2626;
+        }
+
+        .explanation {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .correct-answer {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: #f0fdf4;
+            border-left: 4px solid #059669;
+            border-radius: 6px;
+            color: #166534;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+        }
+
+        .score {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .button {
+            background-color: #3b82f6;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+
+        .button:hover {
+            background-color: #2563eb;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>WEEK-2 (Responsible &amp; Safe AI Systems)</h1>
+        <div id="quiz-container"></div>
+        <div class="controls">
+            <div id="score" class="score"></div>
+            <button id="submit-btn" class="button">Submit Answers</button>
+        </div>
+    </div>
+
+    <script>
+const questions = [
+  {
+    id: 1,
+    question: "Match the unlearning method to their corresponding concept.",
+    options: [
+      "1 → i, 2 → iv, 3 → iii, 4 → ii",
+      "1 → iv, 2 → iv, 3 → ii, 4 → iii",
+      "1 → iv, 2 → i, 3 → iii, 4 → ii",
+      "1 → iv, 2 → i, 3 → ii, 4 → iii"
+    ],
+    correctAnswer: 3,
+    explanation: "Correct answer: D) 1 → iv, 2 → i, 3 → ii, 4 → iii."
+  },
+  {
+    id: 2,
+    question: "What is the primary goal of “Machine Unlearning”?",
+    options: [
+      "To increase the training speed of a model.",
+      "To add more data to an existing model without retraining.",
+      "To remove the influence of specific training data from a trained model.",
+      "To improve the accuracy of a model on new, unseen data."
+    ],
+    correctAnswer: 2,
+    explanation: "Correct answer: C) To remove the influence of specific training data from a trained model."
+  },
+  {
+    id: 3,
+    question: "What is GDPR’s Article 17 about in the context of Machine Learning?",
+    options: [
+      "Right to be remembered",
+      "Right to be forgotten",
+      "Right to be modified",
+      "Right to be distributed"
+    ],
+    correctAnswer: 1,
+    explanation: "Correct answer: B) Right to be forgotten."
+  },
+  {
+    id: 4,
+    question: "In the SISA framework, what is the benefit of using “shards” and “slices”?",
+    options: [
+      "It increases the overall accuracy of the model.",
+      "It ensures that unlearned data never contributes to other components.",
+      "It allows the model to learn from toxic data safely.",
+      "It eliminates the need for any retraining."
+    ],
+    correctAnswer: 1,
+    explanation: "Correct answer: B) It ensures that unlearned data never contributes to other components."
+  },
+  {
+    id: 5,
+    question: "What is “Membership Inference Attack”?",
+    options: [
+      "To distinguish whether specific training data was used to train a model.",
+      "To add new members to a training dataset.",
+      "To speed up the unlearning process.",
+      "To verify the architecture of the model."
+    ],
+    correctAnswer: 0,
+    explanation: "Correct answer: A) To distinguish whether specific training data was used to train a model."
+  },
+  {
+    id: 6,
+    question: "Which unlearning method involves increasing the training loss on the forget set?",
+    options: [
+      "KL Divergence",
+      "Direct Preference Optimization",
+      "Gradient Ascent",
+      "Gradient Difference"
+    ],
+    correctAnswer: 2,
+    explanation: "Correct answer: C) Gradient Ascent."
+  },
+  {
+    id: 7,
+    question: "According to the lecture, what is “Representation Engineering”?",
+    options: [
+      "A bottom-up approach focusing on individual neurons.",
+      "Modifying representation vectors to control model traits.",
+      "A method for increasing the parameter count of a model.",
+      "Re-labeling all data points in a dataset to fix biases."
+    ],
+    correctAnswer: 1,
+    explanation: "Correct answer: B) Modifying representation vectors to control model traits."
+  },
+  {
+    id: 8,
+    question: "In the context of the SISA framework, how does the system minimize the cost of retraining when a data point must be unlearned?",
+    options: [
+      "By using gradient ascent on only the affected data points.",
+      "By applying a differential privacy constraint to the aggregation layer.",
+      "By flipping the labels of the forget set and performing few-shot.",
+      "By retraining only the constituent model whose shards contain the point to be unlearned."
+    ],
+    correctAnswer: 3,
+    explanation: "Correct answer: D) By retraining only the constituent model whose shards contain the point to be unlearned."
+  },
+  {
+    id: 9,
+    question: "According to the lecture, why is unlearning fundamental facts like “the sun rises every day” considered more difficult than unlearning infrequent textual occurrences, such as car accidents?",
+    options: [
+      "Fundamental knowledge is deeply embedded in the model’s implicit knowledge graph.",
+      "Fundamental facts are typically protected by guardrails.",
+      "Models are primarily trained on Wikipedia, which contains these facts.",
+      "Differential privacy guarantees fall off more quickly for fundamental facts."
+    ],
+    correctAnswer: 0,
+    explanation: "Correct answer: A) Fundamental knowledge is deeply embedded in the model’s implicit knowledge graph."
+  },
+  {
+    id: 10,
+    question: "Which unlearning evaluation metric focuses on whether the unlearning process negatively affects the model’s performance on the “retrain data” or unrelated tasks?",
+    options: [
+      "Efficiency",
+      "Forgetting Quality",
+      "Model Utility",
+      "Membership Inference"
+    ],
+    correctAnswer: 2,
+    explanation: "Correct answer: C) Model Utility."
+  },
+  {
+    id: 11,
+    question: "The WMDP benchmark measures hazardous knowledge in which specific areas? (Select all that apply.)",
+    options: [
+      "Biosecurity/Bioweapons",
+      "Cybersecurity",
+      "Chemical security",
+      "Financial market manipulation"
+    ],
+    correctAnswer: [0, 1, 2],
+    explanation: "Correct answers: A) Biosecurity/Bioweapons, B) Cybersecurity, C) Chemical security."
+  },
+  {
+    id: 12,
+    question: "Which methods are used for Edge Unlearning? (Select all that apply.)",
+    options: [
+      "GraphEraser",
+      "GUIDE",
+      "Projector",
+      "GraphdEditor",
+      "GNNDelete",
+      "MEGU"
+    ],
+    correctAnswer: [0, 3, 4, 5],
+    explanation: "Correct answers: A) GraphEraser, D) GraphdEditor, E) GNNDelete, F) MEGU."
+  }
+];
+
+
+
+
+let selectedAnswers = {};
+        let submitted = false;
+
+        function createQuiz() {
+            const quizContainer = document.getElementById('quiz-container');
+            
+            questions.forEach(question => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+                
+                questionCard.innerHTML = `
+                    <div class="question-text">Q${question.id}. ${question.question}</div>
+                    ${question.image ? `<img src="${question.image}" alt="Image for question ${question.id}" class="question-image">` : ''}
+                    <div class="options-container">
+                        ${question.options.map((option, index) => `
+                            <label class="option" data-question="${question.id}" data-option="${index}">
+                                ${Array.isArray(question.correctAnswer) ? `<input class="answer-control" type="checkbox" name="question${question.id}" value="${index}">` : `<input class="answer-control" type="radio" name="question${question.id}" value="${index}">`}
+                                <span class="option-label">${option}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div class="feedback" id="feedback-${question.id}">
+                        <div class="result-icon">
+                            <span class="icon"></span>
+                            <span class="result-text"></span>
+                        </div>
+                        <div class="explanation">${question.explanation}</div>
+                     <div class="correct-answer" id="correct-answer-${question.id}"></div>
+                    </div>
+                `;
+
+                
+                quizContainer.appendChild(questionCard);
+            });
+
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', handleOptionSelect);
+            });
+
+            document.getElementById('submit-btn').addEventListener('click', handleSubmit);
+        }
+
+        function handleOptionSelect(event) {
+            if (submitted) return;
+
+            const questionId = parseInt(event.currentTarget.dataset.question);
+            const optionIndex = parseInt(event.currentTarget.dataset.option);
+            const question = questions.find(q => q.id === questionId);
+            const isMultiSelect = Array.isArray(question.correctAnswer);
+
+            if (isMultiSelect) {
+                if (!selectedAnswers[questionId]) selectedAnswers[questionId] = [];
+                const checkbox = event.currentTarget.querySelector('input[type="checkbox"]');
+
+                if (checkbox.checked) {
+                    if (!selectedAnswers[questionId].includes(optionIndex)) {
+                        selectedAnswers[questionId].push(optionIndex);
+                    }
+                    event.currentTarget.classList.add('selected');
+                } else {
+                    selectedAnswers[questionId] = selectedAnswers[questionId].filter(i => i !== optionIndex);
+                    event.currentTarget.classList.remove('selected');
+                }
+
+                if (selectedAnswers[questionId].length === 0) delete selectedAnswers[questionId];
+            } else {
+                selectedAnswers[questionId] = optionIndex;
+
+                const questionOptions = document.querySelectorAll(`.option[data-question="${questionId}"]`);
+                questionOptions.forEach(option => option.classList.remove('selected'));
+
+                event.currentTarget.classList.add('selected');
+                event.currentTarget.querySelector('input[type="radio"]').checked = true;
+            }
+        }
+
+        function handleSubmit() {
+            if (Object.keys(selectedAnswers).length < questions.length) {
+                alert("Please answer all questions before submitting!");
+                return;
+            }
+
+            submitted = true;
+            let score = 0;
+
+            questions.forEach(question => {
+                let isCorrect;
+                if (Array.isArray(question.correctAnswer)) {
+                    const selected = selectedAnswers[question.id] || [];
+                    const expected = [...question.correctAnswer].sort((a, b) => a - b);
+                    const actual = [...selected].sort((a, b) => a - b);
+                    isCorrect = expected.length === actual.length &&
+                        expected.every((value, index) => value === actual[index]);
+                } else {
+                    isCorrect = selectedAnswers[question.id] === question.correctAnswer;
+                }
+                if (isCorrect) score++;
+
+                const feedback = document.getElementById(`feedback-${question.id}`);
+                feedback.classList.add('visible');
+
+                const correctAnswers = {
+                    1: "C) Reduce the likelihood of conflict and overall systemic risks in the environment.",
+                    2: "A) The model appears to follow safety guidelines during training but pursues different goals after deployment.",
+                    3: "A) Agents over-optimize fault metrics, producing outcomes misaligned with true human values.",
+                    4: "B) Power and resources help them pursue their goals more effectively.",
+                    5: "B) A system behaving differently once sufficiently capable.",
+                    6: "C) Use multiple layers of defense so that individual weaknesses are compensated by others.",
+                    7: "A) Autonomous weapons targeting humans with high precision, C) Lowering the barriers to large-scale violence, D) Autonomous retaliation systems increasing the risk of rapid escalation",
+                    8: "A) Eroded Epistemics, B) Enfeeblement, C) Deceptive Alignment",
+                    9: "A) Improving agents’ robustness to withstand hazards, B) Identifying and mitigating hazards before they cause harm, D) Reducing the severity of inherent model vulnerabilities",
+                    10: "D) Enfeeblement.",
+                    11: "A) High vulnerability, high hazard exposure, high hazard severity.",
+                    12: "D) AI competition may push to speed up development while giving up oversight."
+                };
+                document.getElementById(`correct-answer-${question.id}`).textContent =
+                    `Correct Answer: ${correctAnswers[question.id]}`;
+
+                const resultIcon = feedback.querySelector('.result-icon');
+                const resultText = feedback.querySelector('.result-text');
+                
+                if (isCorrect) {
+                    resultIcon.classList.add('correct');
+                    resultText.textContent = 'Correct Answer +1';
+                } else {
+                    resultIcon.classList.add('wrong');
+                    resultText.textContent = 'Wrong Answer +0';
+                }
+
+                const options = document.querySelectorAll(`.option[data-question="${question.id}"]`);
+                options.forEach((option, index) => {
+                    const correct = Array.isArray(question.correctAnswer)
+                        ? question.correctAnswer.includes(index)
+                        : index === question.correctAnswer;
+                    const selected = Array.isArray(question.correctAnswer)
+                        ? (selectedAnswers[question.id] || []).includes(index)
+                        : index === selectedAnswers[question.id];
+
+                    if (correct) option.classList.add('correct');
+                    else if (selected) option.classList.add('wrong');
+                });
+            });
+
+            document.getElementById('score').textContent = `Score: ${score}/${questions.length}`;
+
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.textContent = 'Try Again';
+            submitBtn.removeEventListener('click', handleSubmit);
+            submitBtn.addEventListener('click', resetQuiz);
+        }
+
+        function resetQuiz() {
+            location.reload();
+        }
+
+        createQuiz();
+    </script>
+</body>
+</html>
