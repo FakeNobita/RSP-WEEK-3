@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsible &amp; Safe AI Systems WEEK-2</title>
+    <title>Responsible &amp; Safe AI Systems WEEK-3</title>
     <style>
         * {
             margin: 0;
@@ -52,7 +52,6 @@
             margin: 16px auto;
             border-radius: 8px;
         }
-
 
         .options-container {
             display: flex;
@@ -131,11 +130,6 @@
             color: #dc2626;
         }
 
-        .explanation {
-            color: #666;
-            font-size: 14px;
-        }
-
         .correct-answer {
             margin-top: 10px;
             padding: 10px 12px;
@@ -183,7 +177,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>WEEK-2 (Responsible &amp; Safe AI Systems)</h1>
+        <h1>WEEK-3 (Responsible &amp; Safe AI Systems)</h1>
         <div id="quiz-container"></div>
         <div class="controls">
             <div id="score" class="score"></div>
@@ -203,7 +197,7 @@ const questions = [
       "1 → iv, 2 → i, 3 → ii, 4 → iii"
     ],
     correctAnswer: 3,
-    explanation: "Correct answer: D) 1 → iv, 2 → i, 3 → ii, 4 → iii."
+    explanation: "D) 1 → iv, 2 → i, 3 → ii, 4 → iii"
   },
   {
     id: 2,
@@ -215,7 +209,7 @@ const questions = [
       "To improve the accuracy of a model on new, unseen data."
     ],
     correctAnswer: 2,
-    explanation: "Correct answer: C) To remove the influence of specific training data from a trained model."
+    explanation: "C) To remove the influence of specific training data from a trained model."
   },
   {
     id: 3,
@@ -227,7 +221,7 @@ const questions = [
       "Right to be distributed"
     ],
     correctAnswer: 1,
-    explanation: "Correct answer: B) Right to be forgotten."
+    explanation: "B) Right to be forgotten."
   },
   {
     id: 4,
@@ -239,7 +233,7 @@ const questions = [
       "It eliminates the need for any retraining."
     ],
     correctAnswer: 1,
-    explanation: "Correct answer: B) It ensures that unlearned data never contributes to other components."
+    explanation: "B) It ensures that unlearned data never contributes to other components."
   },
   {
     id: 5,
@@ -251,7 +245,7 @@ const questions = [
       "To verify the architecture of the model."
     ],
     correctAnswer: 0,
-    explanation: "Correct answer: A) To distinguish whether specific training data was used to train a model."
+    explanation: "A) To distinguish whether specific training data was used to train a model."
   },
   {
     id: 6,
@@ -263,7 +257,7 @@ const questions = [
       "Gradient Difference"
     ],
     correctAnswer: 2,
-    explanation: "Correct answer: C) Gradient Ascent."
+    explanation: "C) Gradient Ascent."
   },
   {
     id: 7,
@@ -275,7 +269,7 @@ const questions = [
       "Re-labeling all data points in a dataset to fix biases."
     ],
     correctAnswer: 1,
-    explanation: "Correct answer: B) Modifying representation vectors to control model traits."
+    explanation: "B) Modifying representation vectors to control model traits."
   },
   {
     id: 8,
@@ -287,7 +281,7 @@ const questions = [
       "By retraining only the constituent model whose shards contain the point to be unlearned."
     ],
     correctAnswer: 3,
-    explanation: "Correct answer: D) By retraining only the constituent model whose shards contain the point to be unlearned."
+    explanation: "D) By retraining only the constituent model whose shards contain the point to be unlearned."
   },
   {
     id: 9,
@@ -299,7 +293,7 @@ const questions = [
       "Differential privacy guarantees fall off more quickly for fundamental facts."
     ],
     correctAnswer: 0,
-    explanation: "Correct answer: A) Fundamental knowledge is deeply embedded in the model’s implicit knowledge graph."
+    explanation: "A) Fundamental knowledge is deeply embedded in the model’s implicit knowledge graph."
   },
   {
     id: 10,
@@ -311,7 +305,7 @@ const questions = [
       "Membership Inference"
     ],
     correctAnswer: 2,
-    explanation: "Correct answer: C) Model Utility."
+    explanation: "C) Model Utility."
   },
   {
     id: 11,
@@ -323,7 +317,7 @@ const questions = [
       "Financial market manipulation"
     ],
     correctAnswer: [0, 1, 2],
-    explanation: "Correct answers: A) Biosecurity/Bioweapons, B) Cybersecurity, C) Chemical security."
+    explanation: "A) Biosecurity/Bioweapons, B) Cybersecurity, C) Chemical security"
   },
   {
     id: 12,
@@ -337,169 +331,185 @@ const questions = [
       "MEGU"
     ],
     correctAnswer: [0, 3, 4, 5],
-    explanation: "Correct answers: A) GraphEraser, D) GraphdEditor, E) GNNDelete, F) MEGU."
+    explanation: "A) GraphEraser, D) GraphdEditor, E) GNNDelete, F) MEGU"
   }
 ];
 
-
-
-
 let selectedAnswers = {};
-        let submitted = false;
+let submitted = false;
 
-        function createQuiz() {
-            const quizContainer = document.getElementById('quiz-container');
-            
-            questions.forEach(question => {
-                const questionCard = document.createElement('div');
-                questionCard.className = 'question-card';
-                
-                questionCard.innerHTML = `
-                    <div class="question-text">Q${question.id}. ${question.question}</div>
-                    ${question.image ? `<img src="${question.image}" alt="Image for question ${question.id}" class="question-image">` : ''}
-                    <div class="options-container">
-                        ${question.options.map((option, index) => `
-                            <label class="option" data-question="${question.id}" data-option="${index}">
-                                ${Array.isArray(question.correctAnswer) ? `<input class="answer-control" type="checkbox" name="question${question.id}" value="${index}">` : `<input class="answer-control" type="radio" name="question${question.id}" value="${index}">`}
-                                <span class="option-label">${option}</span>
-                            </label>
-                        `).join('')}
-                    </div>
-                    <div class="feedback" id="feedback-${question.id}">
-                        <div class="result-icon">
-                            <span class="icon"></span>
-                            <span class="result-text"></span>
-                        </div>
-                        <div class="explanation">${question.explanation}</div>
-                     <div class="correct-answer" id="correct-answer-${question.id}"></div>
-                    </div>
-                `;
+function createQuiz() {
+    const quizContainer = document.getElementById('quiz-container');
 
-                
-                quizContainer.appendChild(questionCard);
-            });
+    questions.forEach(question => {
+        const questionCard = document.createElement('div');
+        questionCard.className = 'question-card';
 
-            document.querySelectorAll('.option').forEach(option => {
-                option.addEventListener('click', handleOptionSelect);
-            });
+        const isMultiSelect = Array.isArray(question.correctAnswer);
 
-            document.getElementById('submit-btn').addEventListener('click', handleSubmit);
+        questionCard.innerHTML = `
+            <div class="question-text">Q${question.id}. ${question.question}</div>
+            ${question.image ? `<img src="${question.image}" alt="Image for question ${question.id}" class="question-image">` : ''}
+            <div class="options-container">
+                ${question.options.map((option, index) => `
+                    <label class="option" data-question="${question.id}" data-option="${index}">
+                        ${isMultiSelect
+                            ? `<input class="answer-control" type="checkbox" name="question${question.id}" value="${index}">`
+                            : `<input class="answer-control" type="radio" name="question${question.id}" value="${index}">`
+                        }
+                        <span class="option-label">${option}</span>
+                    </label>
+                `).join('')}
+            </div>
+
+            <div class="feedback" id="feedback-${question.id}">
+                <div class="result-icon">
+                    <span class="icon"></span>
+                    <span class="result-text"></span>
+                </div>
+
+                <div class="correct-answer">
+                    Correct Answer: ${question.explanation}
+                </div>
+            </div>
+        `;
+
+        quizContainer.appendChild(questionCard);
+    });
+
+    document.querySelectorAll('.option').forEach(option => {
+        option.addEventListener('click', handleOptionSelect);
+    });
+
+    document.getElementById('submit-btn').addEventListener('click', handleSubmit);
+}
+
+function handleOptionSelect(event) {
+    if (submitted) return;
+
+    const questionId = parseInt(event.currentTarget.dataset.question);
+    const optionIndex = parseInt(event.currentTarget.dataset.option);
+    const question = questions.find(q => q.id === questionId);
+    const isMultiSelect = Array.isArray(question.correctAnswer);
+
+    if (isMultiSelect) {
+        if (!selectedAnswers[questionId]) {
+            selectedAnswers[questionId] = [];
         }
 
-        function handleOptionSelect(event) {
-            if (submitted) return;
+        const checkbox = event.currentTarget.querySelector('input[type="checkbox"]');
 
-            const questionId = parseInt(event.currentTarget.dataset.question);
-            const optionIndex = parseInt(event.currentTarget.dataset.option);
-            const question = questions.find(q => q.id === questionId);
-            const isMultiSelect = Array.isArray(question.correctAnswer);
-
-            if (isMultiSelect) {
-                if (!selectedAnswers[questionId]) selectedAnswers[questionId] = [];
-                const checkbox = event.currentTarget.querySelector('input[type="checkbox"]');
-
-                if (checkbox.checked) {
-                    if (!selectedAnswers[questionId].includes(optionIndex)) {
-                        selectedAnswers[questionId].push(optionIndex);
-                    }
-                    event.currentTarget.classList.add('selected');
-                } else {
-                    selectedAnswers[questionId] = selectedAnswers[questionId].filter(i => i !== optionIndex);
-                    event.currentTarget.classList.remove('selected');
-                }
-
-                if (selectedAnswers[questionId].length === 0) delete selectedAnswers[questionId];
-            } else {
-                selectedAnswers[questionId] = optionIndex;
-
-                const questionOptions = document.querySelectorAll(`.option[data-question="${questionId}"]`);
-                questionOptions.forEach(option => option.classList.remove('selected'));
-
-                event.currentTarget.classList.add('selected');
-                event.currentTarget.querySelector('input[type="radio"]').checked = true;
-            }
-        }
-
-        function handleSubmit() {
-            if (Object.keys(selectedAnswers).length < questions.length) {
-                alert("Please answer all questions before submitting!");
-                return;
+        if (checkbox.checked) {
+            if (!selectedAnswers[questionId].includes(optionIndex)) {
+                selectedAnswers[questionId].push(optionIndex);
             }
 
-            submitted = true;
-            let score = 0;
-
-            questions.forEach(question => {
-                let isCorrect;
-                if (Array.isArray(question.correctAnswer)) {
-                    const selected = selectedAnswers[question.id] || [];
-                    const expected = [...question.correctAnswer].sort((a, b) => a - b);
-                    const actual = [...selected].sort((a, b) => a - b);
-                    isCorrect = expected.length === actual.length &&
-                        expected.every((value, index) => value === actual[index]);
-                } else {
-                    isCorrect = selectedAnswers[question.id] === question.correctAnswer;
-                }
-                if (isCorrect) score++;
-
-                const feedback = document.getElementById(`feedback-${question.id}`);
-                feedback.classList.add('visible');
-
-                const correctAnswers = {
-                    1: "C) Reduce the likelihood of conflict and overall systemic risks in the environment.",
-                    2: "A) The model appears to follow safety guidelines during training but pursues different goals after deployment.",
-                    3: "A) Agents over-optimize fault metrics, producing outcomes misaligned with true human values.",
-                    4: "B) Power and resources help them pursue their goals more effectively.",
-                    5: "B) A system behaving differently once sufficiently capable.",
-                    6: "C) Use multiple layers of defense so that individual weaknesses are compensated by others.",
-                    7: "A) Autonomous weapons targeting humans with high precision, C) Lowering the barriers to large-scale violence, D) Autonomous retaliation systems increasing the risk of rapid escalation",
-                    8: "A) Eroded Epistemics, B) Enfeeblement, C) Deceptive Alignment",
-                    9: "A) Improving agents’ robustness to withstand hazards, B) Identifying and mitigating hazards before they cause harm, D) Reducing the severity of inherent model vulnerabilities",
-                    10: "D) Enfeeblement.",
-                    11: "A) High vulnerability, high hazard exposure, high hazard severity.",
-                    12: "D) AI competition may push to speed up development while giving up oversight."
-                };
-                document.getElementById(`correct-answer-${question.id}`).textContent =
-                    `Correct Answer: ${correctAnswers[question.id]}`;
-
-                const resultIcon = feedback.querySelector('.result-icon');
-                const resultText = feedback.querySelector('.result-text');
-                
-                if (isCorrect) {
-                    resultIcon.classList.add('correct');
-                    resultText.textContent = 'Correct Answer +1';
-                } else {
-                    resultIcon.classList.add('wrong');
-                    resultText.textContent = 'Wrong Answer +0';
-                }
-
-                const options = document.querySelectorAll(`.option[data-question="${question.id}"]`);
-                options.forEach((option, index) => {
-                    const correct = Array.isArray(question.correctAnswer)
-                        ? question.correctAnswer.includes(index)
-                        : index === question.correctAnswer;
-                    const selected = Array.isArray(question.correctAnswer)
-                        ? (selectedAnswers[question.id] || []).includes(index)
-                        : index === selectedAnswers[question.id];
-
-                    if (correct) option.classList.add('correct');
-                    else if (selected) option.classList.add('wrong');
-                });
-            });
-
-            document.getElementById('score').textContent = `Score: ${score}/${questions.length}`;
-
-            const submitBtn = document.getElementById('submit-btn');
-            submitBtn.textContent = 'Try Again';
-            submitBtn.removeEventListener('click', handleSubmit);
-            submitBtn.addEventListener('click', resetQuiz);
+            event.currentTarget.classList.add('selected');
+        } else {
+            selectedAnswers[questionId] = selectedAnswers[questionId].filter(i => i !== optionIndex);
+            event.currentTarget.classList.remove('selected');
         }
 
-        function resetQuiz() {
-            location.reload();
+        if (selectedAnswers[questionId].length === 0) {
+            delete selectedAnswers[questionId];
+        }
+    } else {
+        selectedAnswers[questionId] = optionIndex;
+
+        const questionOptions = document.querySelectorAll(
+            `.option[data-question="${questionId}"]`
+        );
+
+        questionOptions.forEach(option => {
+            option.classList.remove('selected');
+        });
+
+        event.currentTarget.classList.add('selected');
+
+        event.currentTarget.querySelector('input[type="radio"]').checked = true;
+    }
+}
+
+function handleSubmit() {
+    if (Object.keys(selectedAnswers).length < questions.length) {
+        alert("Please answer all questions before submitting!");
+        return;
+    }
+
+    submitted = true;
+    let score = 0;
+
+    questions.forEach(question => {
+        let isCorrect;
+
+        if (Array.isArray(question.correctAnswer)) {
+            const selected = selectedAnswers[question.id] || [];
+            const expected = [...question.correctAnswer].sort((a, b) => a - b);
+            const actual = [...selected].sort((a, b) => a - b);
+
+            isCorrect =
+                expected.length === actual.length &&
+                expected.every((value, index) => value === actual[index]);
+        } else {
+            isCorrect =
+                selectedAnswers[question.id] === question.correctAnswer;
         }
 
-        createQuiz();
+        if (isCorrect) {
+            score++;
+        }
+
+        const feedback = document.getElementById(`feedback-${question.id}`);
+        feedback.classList.add('visible');
+
+        const resultIcon = feedback.querySelector('.result-icon');
+        const resultText = feedback.querySelector('.result-text');
+
+        if (isCorrect) {
+            resultIcon.classList.add('correct');
+            resultText.textContent = 'Correct Answer +1';
+        } else {
+            resultIcon.classList.add('wrong');
+            resultText.textContent = 'Wrong Answer +0';
+        }
+
+        const options = document.querySelectorAll(
+            `.option[data-question="${question.id}"]`
+        );
+
+        options.forEach((option, index) => {
+            const correct = Array.isArray(question.correctAnswer)
+                ? question.correctAnswer.includes(index)
+                : index === question.correctAnswer;
+
+            const selected = Array.isArray(question.correctAnswer)
+                ? (selectedAnswers[question.id] || []).includes(index)
+                : index === selectedAnswers[question.id];
+
+            if (correct) {
+                option.classList.add('correct');
+            } else if (selected) {
+                option.classList.add('wrong');
+            }
+        });
+    });
+
+    document.getElementById('score').textContent =
+        `Score: ${score}/${questions.length}`;
+
+    const submitBtn = document.getElementById('submit-btn');
+
+    submitBtn.textContent = 'Try Again';
+
+    submitBtn.removeEventListener('click', handleSubmit);
+    submitBtn.addEventListener('click', resetQuiz);
+}
+
+function resetQuiz() {
+    location.reload();
+}
+
+createQuiz();
     </script>
 </body>
 </html>
